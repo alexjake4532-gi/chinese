@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozy Chinese • 中文学习</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23b86f5f'/><text x='50' y='54' font-size='64' font-family='system-ui,-apple-system,sans-serif' font-weight='700' text-anchor='middle' dominant-baseline='central' fill='white'>中</text></svg>">
+<style>
+:root{
+  --bg:#f8f3ea;--paper:#fffdf8;--ink:#39342e;--muted:#6f675e;
+  --accent:#b86f5f;--accent2:#d9a17f;--cream:#f2e4d3;--green:#7f9b83;
+  --red:#c25b4e;--purple:#8b6fa8;--yellow:#e8b96a;
+  --shadow:0 12px 35px rgba(83,63,45,.10);--radius:22px;
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --smooth:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);
+background:radial-gradient(circle at 10% 0%,#fff8ee 0 22%,transparent 40%),linear-gradient(135deg,#f8f3ea,#f5eee5 55%,#f9f5ed);min-height:100vh;overflow-x:hidden;
+background-size:200% 200%;animation:bgShift 20s ease infinite}
+@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+body:before,body:after{content:"";position:fixed;width:180px;height:180px;border-radius:50%;filter:blur(8px);opacity:.28;pointer-events:none;z-index:-1}
+body:before{background:#e8b99e;top:12%;left:-70px;animation:floatBlob 8s ease-in-out infinite}
+body:after{background:#b8cdb9;right:-70px;bottom:12%;animation:floatBlob 10s ease-in-out infinite reverse}
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(25px,-25px) scale(1.12)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,111,95,.35)}50%{box-shadow:0 0 0 14px rgba(184,111,95,0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px) rotate(-2deg)}40%{transform:translateX(8px) rotate(2deg)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes pop{0%,100%{transform:scale(.85);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes bounceIn{0%{transform:scale(.4) translateY(30px);opacity:0}60%{transform:scale(1.1) translateY(-8px)}80%{transform:scale(.97)}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes sparkle{0%{transform:scale(0) rotate(0);opacity:0}50%{transform:scale(1.2) rotate(180deg);opacity:1}100%{transform:scale(0) rotate(360deg);opacity:0}}
+@keyframes ripple{0%{transform:scale(0);opacity:.6}100%{transform:scale(4);opacity:0}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(184,111,95,.3)}50%{box-shadow:0 0 30px rgba(184,111,95,.6)}}
+@keyframes confettiFall{0%{transform:translateY(-10vh) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes brushPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.85}}
+@keyframes tapHint{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
+button{font:inherit}
+header{max-width:1120px;margin:auto;padding:28px 22px 10px;display:flex;justify-content:space-between;align-items:center;gap:20px;animation:fadeUp .6s var(--smooth) both}
+.brand{display:flex;align-items:center;gap:13px}
+.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;display:grid;place-items:center;font-size:25px;box-shadow:var(--shadow);transition:.4s var(--spring);cursor:pointer}
+.logo:hover{transform:rotate(-12deg) scale(1.12);border-radius:24px}
+.brand h1{margin:0;font-size:21px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav{border:0;background:transparent;padding:10px 14px;border-radius:14px;color:var(--muted);cursor:pointer;position:relative;overflow:hidden;transition:.3s var(--spring)}
+.nav:before{content:"";position:absolute;inset:0;background:var(--paper);border-radius:14px;transform:scale(0);transition:.4s var(--spring);z-index:-1}
+.nav:hover:before,.nav.active:before{transform:scale(1)}
+.nav:hover,.nav.active{color:var(--accent);transform:translateY(-2px)}
+.nav:active{transform:scale(.95)}
+.nav.active{box-shadow:0 5px 18px rgba(83,63,45,.07)}
+main{max-width:1120px;margin:auto;padding:20px 22px 55px}
+.hero{animation:fadeUp .7s var(--smooth) both;background:linear-gradient(135deg,#fffaf1,#f5e7d8);background-size:200% 200%;border:1px solid #eadccc;border-radius:30px;padding:35px;display:flex;justify-content:space-between;align-items:center;gap:25px;box-shadow:var(--shadow);overflow:hidden;position:relative;transition:.5s var(--spring)}
+.hero:hover{box-shadow:0 20px 50px rgba(83,63,45,.18);transform:translateY(-3px)}
+.hero:after{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(217,161,127,.12) 0%,transparent 40%);animation:gradientShift 8s ease infinite;background-size:50% 50%;pointer-events:none}
+.hero h2{font-size:38px;margin:0 0 8px;letter-spacing:-1px}
+.hero p{color:var(--muted);max-width:620px;line-height:1.65;margin:0}
+.hero-art{font-size:90px;opacity:.9;animation:float 4s ease-in-out infinite;cursor:pointer;user-select:none;transition:.3s var(--spring);position:relative;z-index:1}
+.hero-art:hover{transform:scale(1.15) rotate(6deg)}
+.hero-art:active{transform:scale(.85) rotate(-10deg)}
+.section{margin-top:32px;animation:fadeUp .7s var(--smooth) both}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.section h2{margin:0;font-size:22px;position:relative;display:inline-block}
+.section h2:after{content:"";position:absolute;left:0;bottom:-4px;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:.5s var(--spring)}
+.section:hover h2:after{width:100%}
+.section-head span{font-size:12px;color:var(--muted)}
+.section-note{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 16px;max-width:760px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.filter{border:1px solid #e4d7c8;background:rgba(255,253,248,.7);padding:9px 13px;border-radius:99px;cursor:pointer;color:var(--muted);transition:.3s var(--spring);position:relative;overflow:hidden}
+.filter:hover{transform:translateY(-3px) scale(1.05);border-color:var(--accent2)}
+.filter:active{transform:scale(.95)}
+.filter.active{background:var(--ink);color:#fff;border-color:var(--ink);animation:glow 2s ease infinite}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:rgba(255,253,248,.88);border:1px solid #eadfd2;border-radius:var(--radius);padding:20px;box-shadow:0 8px 25px rgba(83,63,45,.06);transition:.45s var(--spring);position:relative;overflow:hidden;animation:bounceIn .5s var(--spring) both}
+.card:before{content:"";position:absolute;top:50%;left:50%;width:5px;height:5px;background:rgba(184,111,95,.15);border-radius:50%;transform:translate(-50%,-50%) scale(0);transition:.6s var(--smooth)}
+.card:hover:before{transform:translate(-50%,-50%) scale(60)}
+.card:hover{transform:translateY(-8px) rotate(-1deg) scale(1.02);box-shadow:0 20px 40px rgba(83,63,45,.15);border-color:var(--accent2)}
+.card>*{position:relative;z-index:1}
+.zh{font-size:31px;font-weight:750;transition:.3s var(--spring)}
+.card:hover .zh{transform:scale(1.08);color:var(--accent)}
+.py{color:var(--accent);font-size:14px;margin-top:5px}
+.en{color:var(--muted);font-size:13px;margin-top:5px}
+.sound{float:right;border:0;background:linear-gradient(135deg,#f3e6d8,#ead6c2);width:36px;height:36px;border-radius:50%;cursor:pointer;color:var(--accent);font-size:16px;transition:.4s var(--spring);position:relative}
+.sound:hover{transform:scale(1.2) rotate(15deg);box-shadow:0 6px 18px rgba(184,111,95,.35)}
+.sound:active{transform:scale(.85) rotate(-15deg)}
+.sound.playing{animation:pulse .8s ease-out,wiggle .4s ease}
+
+/* Numbers 0–10 */
+.numbers-wrap{background:var(--paper);border:1px solid #eadfd2;border-radius:26px;padding:20px;box-shadow:0 8px 25px rgba(83,63,45,.06);position:relative;overflow:hidden}
+.numbers-wrap:before{content:"🔢";position:absolute;top:14px;right:18px;font-size:24px;opacity:.25;animation:float 5s ease-in-out infinite}
+.number-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.num{padding:14px 10px;text-align:center;background:#fffaf3;border:1px solid #eadfd2;border-radius:18px;transition:.4s var(--spring);display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;overflow:hidden;animation:bounceIn .5s var(--spring) both}
+.num:hover{transform:translateY(-8px) rotate(2deg) scale(1.05);box-shadow:0 14px 28px rgba(83,63,45,.15);border-color:var(--accent2)}
+.num:active{transform:scale(.96)}
+.num .zh{font-size:26px;line-height:1.1}
+.num:hover .zh{transform:scale(1.15);color:var(--accent)}
+.num .py{font-size:12px;margin:0}
+.num .en{font-size:11px;margin:0}
+.num .sound{float:none;width:32px;height:32px;font-size:14px;margin-top:2px}
+
+/* Numbers + 年 */
+.yearnums-wrap{background:linear-gradient(150deg,#fdf3e6,#f7e6d2);background-size:200% 200%;animation:gradientShift 12s ease infinite;border:1px solid #e6d2bb;border-radius:26px;padding:20px;box-shadow:0 8px 25px rgba(83,63,45,.06);position:relative;overflow:hidden}
+.yearnums-wrap:before{content:"📅";position:absolute;top:14px;right:18px;font-size:24px;opacity:.3;animation:float 6s ease-in-out infinite reverse}
+.year-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.yearnum{padding:14px 10px;text-align:center;background:rgba(255,255,255,.65);border:1px solid #e6d2bb;border-radius:18px;transition:.4s var(--spring);display:flex;flex-direction:column;align-items:center;gap:5px;animation:bounceIn .5s var(--spring) both}
+.yearnum:hover{transform:translateY(-8px) rotate(-2deg) scale(1.05);box-shadow:0 14px 28px rgba(83,63,45,.15);border-color:var(--accent);background:rgba(255,255,255,.9)}
+.yearnum .zh{font-size:22px;line-height:1.1}
+.yearnum:hover .zh{color:var(--accent);transform:scale(1.15)}
+.yearnum .py{font-size:12px;margin:0}
+.yearnum .en{font-size:11px;margin:0}
+.yearnum .sound{float:none;width:32px;height:32px;font-size:14px;margin-top:2px}
+
+/* Year examples */
+.yearbox{background:linear-gradient(135deg,#3e3832,#4a423a);background-size:200% 200%;animation:gradientShift 15s ease infinite;color:#fff;border-radius:25px;padding:25px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.yearbox .example{background:rgba(255,255,255,.08);padding:18px;border-radius:18px;position:relative;transition:.4s var(--spring);cursor:pointer}
+.yearbox .example:hover{background:rgba(255,255,255,.15);transform:translateY(-4px) scale(1.02)}
+.yearbox b{font-size:25px}.yearbox span{color:#ead2bd;display:block;margin-top:5px;font-size:14px}
+.yearbox .sound{background:rgba(255,255,255,.12);color:#fff}
+.yearbox .sound:hover{background:rgba(255,255,255,.25);transform:scale(1.2) rotate(15deg)}
+.tip{margin-top:15px;color:#d9c2ad;font-size:13px;line-height:1.5}
+
+/* ================= HOW TO WRITE ================= */
+.writer-wrap{background:linear-gradient(150deg,#fdf8f0,#f5e9d8);border:1px solid #e6d2bb;border-radius:28px;padding:24px;box-shadow:0 12px 35px rgba(83,63,45,.08);position:relative;overflow:hidden}
+.writer-wrap:before{content:"✍️";position:absolute;top:14px;right:20px;font-size:26px;opacity:.35;animation:float 5s ease-in-out infinite}
+.writer-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.writer-btn{border:1px solid #e4d7c8;background:rgba(255,253,248,.9);padding:9px 16px;border-radius:99px;cursor:pointer;color:var(--muted);font-weight:600;font-size:13px;transition:.3s var(--spring);position:relative;overflow:hidden}
+.writer-btn:hover{transform:translateY(-3px) scale(1.05);border-color:var(--accent2);color:var(--accent);box-shadow:0 8px 18px rgba(83,63,45,.08)}
+.writer-btn:active{transform:scale(.95)}
+.writer-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.writer-hint{font-size:12px;color:var(--muted);margin-left:auto;font-style:italic;animation:tapHint 2.5s ease-in-out infinite}
+
+/* ============ FLEXBOX layout — cards size to their content ============ */
+.stroke-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  align-items:flex-start;
+}
+
+.stroke-card{
+  background:rgba(255,253,248,.92);
+  border:1px solid #eadfd2;
+  border-radius:20px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  transition:.4s var(--spring);
+  position:relative;
+  overflow:hidden;
+  animation:bounceIn .5s var(--spring) both;
+  cursor:pointer;
+  /* width is determined by content — the holder's flex content */
+  flex:0 0 auto;
+}
+.stroke-card:hover{transform:translateY(-6px) rotate(-.5deg) scale(1.02);box-shadow:0 18px 36px rgba(83,63,45,.14);border-color:var(--accent2)}
+.stroke-card.active{box-shadow:0 18px 36px rgba(184,111,95,.25);border-color:var(--accent)}
+
+/* Holder hugs its cells — no fixed width */
+.writer-canvas-holder{position:relative;background:#fffdf8;border-radius:14px;border:2px dashed #e6d2bb;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;transition:.3s var(--spring)}
+.stroke-card:hover .writer-canvas-holder{border-color:var(--accent);border-style:solid;box-shadow:inset 0 0 0 3px rgba(184,111,95,.06)}
+
+.writer-cell{position:relative;width:100px;height:100px;flex:0 0 auto;display:grid;place-items:center}
+.writer-cell:before{content:"";position:absolute;inset:0;border-radius:8px;
+background:
+  linear-gradient(to right, transparent calc(50% - .5px), rgba(184,111,95,.18) calc(50% - .5px), rgba(184,111,95,.18) calc(50% + .5px), transparent calc(50% + .5px)),
+  linear-gradient(to bottom, transparent calc(50% - .5px), rgba(184,111,95,.18) calc(50% - .5px), rgba(184,111,95,.18) calc(50% + .5px), transparent calc(50% + .5px)),
+  linear-gradient(45deg, transparent calc(50% - .5px), rgba(184,111,95,.10) calc(50% - .5px), rgba(184,111,95,.10) calc(50% + .5px), transparent calc(50% + .5px)),
+  linear-gradient(-45deg, transparent calc(50% - .5px), rgba(184,111,95,.10) calc(50% - .5px), rgba(184,111,95,.10) calc(50% + .5px), transparent calc(50% + .5px));
+pointer-events:none;z-index:0}
+.writer-target{position:relative;z-index:1}
+
+.stroke-label{text-align:center;line-height:1.25;width:100%}
+.stroke-label .zh{font-size:22px;font-weight:800;transition:.3s var(--spring)}
+.stroke-card:hover .stroke-label .zh{color:var(--accent);transform:scale(1.06)}
+.stroke-label .py{font-size:12px;margin-top:3px;font-weight:600}
+.stroke-label .en{font-size:11px;margin-top:2px}
+
+.stroke-actions{display:flex;gap:6px;margin-top:2px}
+.stroke-action{border:0;background:#f3e6d8;color:var(--accent);width:30px;height:30px;border-radius:50%;font-size:13px;cursor:pointer;transition:.35s var(--spring);position:relative}
+.stroke-action:hover{transform:scale(1.15) rotate(10deg);background:#ead6c2;box-shadow:0 6px 14px rgba(184,111,95,.3)}
+.stroke-action:active{transform:scale(.9)}
+
+.writer-loading{position:absolute;inset:0;display:grid;place-items:center;background:rgba(255,253,248,.9);border-radius:14px;font-size:22px;color:var(--accent);animation:brushPulse 1.2s ease-in-out infinite;z-index:2;pointer-events:none}
+
+/* Quick practice launch card */
+.quiz-launch{background:linear-gradient(135deg,#fffdf8,#f7ecdd,#fbe9e6);background-size:200% 200%;animation:gradientShift 10s ease infinite;border:1px solid #eadfd2;border-radius:28px;padding:38px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+.quiz-launch:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(217,161,127,.18),transparent 50%);animation:gradientShift 6s ease infinite;pointer-events:none}
+.quiz-launch h3{margin:0 0 8px;font-size:26px;position:relative}
+.quiz-launch p{color:var(--muted);margin:0 0 22px;position:relative;font-size:15px}
+.launch-btn{position:relative;display:inline-flex;align-items:center;gap:10px;border:0;padding:18px 36px;font-size:17px;font-weight:700;color:#fff;border-radius:99px;cursor:pointer;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--purple));background-size:200% 200%;animation:gradientShift 4s ease infinite,glow 3s ease infinite;transition:.4s var(--spring);box-shadow:0 12px 28px rgba(184,111,95,.35)}
+.launch-btn:hover{transform:translateY(-4px) scale(1.06);box-shadow:0 20px 42px rgba(184,111,95,.5)}
+.launch-btn:active{transform:scale(.96)}
+.launch-btn .arrow{transition:.4s var(--spring);display:inline-block}
+.launch-btn:hover .arrow{transform:translate(6px,-4px) rotate(10deg)}
+footer{text-align:center;color:#968b81;font-size:12px;padding:25px}
+footer span{display:inline-block;animation:float 3s ease-in-out infinite}
+
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);transform:scale(0);animation:ripple .6s var(--smooth);pointer-events:none}
+
+/* Quiz overlay */
+.quiz-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#f8f3ea,#f5eee5);z-index:500;overflow-y:auto;animation:fadeUp .4s var(--smooth) both;padding:24px}
+.quiz-overlay.hidden{display:none}
+.quiz-frame{max-width:720px;margin:0 auto}
+.quiz-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.quiz-brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.quiz-brand .logo{width:38px;height:38px;border-radius:12px;font-size:20px}
+.close-btn{border:0;background:rgba(255,253,248,.85);color:var(--muted);padding:9px 16px;border-radius:12px;cursor:pointer;font-weight:600;transition:.3s var(--spring)}
+.close-btn:hover{background:#fff;color:var(--accent);transform:translateY(-2px) scale(1.05)}
+.close-btn:active{transform:scale(.95)}
+
+.quiz-card{background:rgba(255,253,248,.95);backdrop-filter:blur(8px);border:1px solid #eadfd2;border-radius:28px;padding:30px;box-shadow:0 20px 50px rgba(83,63,45,.14);position:relative;overflow:hidden}
+.quiz-card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(217,161,127,.08) 70%,transparent);background-size:200% 200%;animation:gradientShift 8s ease infinite;pointer-events:none}
+
+.progress-track{height:12px;background:#efe2d0;border-radius:99px;overflow:hidden;margin-bottom:16px;position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--purple));background-size:200% 200%;border-radius:99px;transition:width .5s var(--spring);width:0%;animation:gradientShift 3s ease infinite}
+
+.stats{display:flex;gap:18px;font-size:13px;color:var(--muted);margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+.stats b{color:var(--ink);font-size:17px;font-weight:800}
+.stats .streak-fire{color:var(--accent);font-weight:700}
+
+.sparkle-stage{height:56px;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;pointer-events:none;position:relative;overflow:hidden}
+.sparkle-stage .stage-sparkle{position:absolute;font-size:26px;animation:sparkleFloat 1.4s var(--smooth) forwards;opacity:0}
+@keyframes sparkleFloat{
+  0%{transform:translateY(20px) scale(0) rotate(0);opacity:0}
+  30%{transform:translateY(-6px) scale(1.15) rotate(140deg);opacity:1}
+  60%{transform:translateY(-14px) scale(1) rotate(260deg);opacity:1}
+  100%{transform:translateY(-42px) scale(.6) rotate(360deg);opacity:0}
+}
+.sparkle-stage .stage-label{color:var(--green);font-weight:700;font-size:14px;opacity:0;transition:opacity .3s;letter-spacing:.02em}
+.sparkle-stage.show-label .stage-label{opacity:1}
+
+.prompt-label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px}
+.quiz-word{font-size:64px;font-weight:800;line-height:1.05;text-align:center;margin-bottom:6px;letter-spacing:-1px;
+background:linear-gradient(135deg,var(--ink),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;
+animation:pop .45s var(--spring) both}
+.quiz-py{color:var(--accent);font-size:17px;text-align:center;min-height:24px;font-weight:600}
+.quiz-hint{color:var(--ink);opacity:.7;font-size:13px;text-align:center;margin-top:4px;min-height:18px}
+.speak-row{display:flex;justify-content:center;margin:14px 0 22px}
+.speak-btn{border:0;background:linear-gradient(135deg,#f3e6d8,#ead6c2);color:var(--accent);width:52px;height:52px;border-radius:50%;font-size:22px;cursor:pointer;transition:.4s var(--spring);box-shadow:0 6px 18px rgba(184,111,95,.2)}
+.speak-btn:hover{transform:scale(1.15) rotate(12deg);box-shadow:0 10px 26px rgba(184,111,95,.4)}
+.speak-btn:active{transform:scale(.9)}
+.speak-btn.playing{animation:pulse .8s ease-out}
+
+.answers{display:grid;gap:12px;grid-template-columns:1fr 1fr;margin-top:8px}
+.answer{border:2px solid #d9c8b3;background:#fffaf3;color:var(--ink);padding:16px 18px;border-radius:18px;cursor:pointer;transition:.35s var(--spring);font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;overflow:hidden;text-align:left;font-family:inherit}
+.answer:hover:not(:disabled){transform:translateY(-4px) scale(1.03);border-color:var(--accent);background:#fff5e8;box-shadow:0 12px 28px rgba(83,63,45,.15)}
+.answer:active:not(:disabled){transform:scale(.97)}
+.answer:disabled{cursor:default;color:var(--ink);opacity:1}
+.answer .mark{font-weight:800;font-size:20px;opacity:0;transform:scale(0);transition:.3s var(--spring)}
+.answer.correct{background:linear-gradient(135deg,#e8f1e6,#d7ead2);border-color:var(--green);color:#3f5a44}
+.answer.correct .mark{opacity:1;transform:scale(1);color:var(--green)}
+.answer.correct .mark:before{content:"✓"}
+.answer.wrong{background:linear-gradient(135deg,#fbe9e6,#f7d9d3);border-color:var(--red);color:#7a3129;animation:shake .4s}
+.answer.wrong .mark{opacity:1;transform:scale(1);color:var(--red)}
+.answer.wrong .mark:before{content:"✕"}
+.answer.dim{opacity:.7;color:var(--muted)}
+
+.result{text-align:center;margin-top:20px;font-size:15px;font-weight:700;min-height:24px;transition:.3s}
+.result.good{color:var(--green);animation:pop .4s var(--spring)}
+.result.bad{color:var(--red);animation:pop .4s var(--spring)}
+
+.actions{display:flex;gap:12px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.btn{border:0;padding:14px 28px;border-radius:16px;cursor:pointer;font-weight:700;font-size:15px;transition:.35s var(--spring);position:relative;overflow:hidden;font-family:inherit}
+.btn-primary{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));background-size:200% 200%;animation:gradientShift 4s ease infinite}
+.btn-primary:hover:not(:disabled){transform:translateY(-4px) scale(1.05);box-shadow:0 14px 30px rgba(184,111,95,.45)}
+.btn-primary:active:not(:disabled){transform:scale(.96)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;animation:none;background:#d9c9b8;color:#fff}
+.btn-ghost{background:#f3e6d8;color:var(--accent)}
+.btn-ghost:hover{background:#ead6c2;transform:translateY(-4px) scale(1.05)}
+.btn-ghost:active{transform:scale(.96)}
+
+.done{text-align:center;padding:20px 10px;animation:bounceIn .6s var(--spring) both}
+.done .big{font-size:80px;line-height:1;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+.done h3{margin:0 0 8px;font-size:28px}
+.done .score-line{font-size:40px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent;margin:8px 0}
+.done p{color:var(--muted);margin:0 0 24px;font-size:15px}
+
+@media(max-width:520px){
+  .answers{grid-template-columns:1fr}
+  .quiz-word{font-size:48px}
+  .quiz-overlay{padding:14px}
+  .quiz-card{padding:22px}
+  .writer-cell{width:78px;height:78px}
+  .writer-canvas-holder{padding:6px;gap:4px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo" onclick="wiggleLogo(this)">中</div><div><h1>Cozy Chinese</h1><p>中文学习 · Learn a little every day</p></div></div>
+  <nav>
+    <button class="nav active" data-go="home">Home</button>
+    <button class="nav" data-go="vocab">Vocabulary</button>
+    <button class="nav" data-go="numbers">Numbers 0–10</button>
+    <button class="nav" data-go="yearnums">Numbers + 年</button>
+    <button class="nav" data-go="years">Years</button>
+    <button class="nav" data-go="write">How to Write</button>
+    <button class="nav" data-go="quiz">Practice</button>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div><h2>你好! 👋</h2><p>Build your Chinese vocabulary with simple cards, useful time words, Chinese numbers, and an easy guide to saying years.</p></div>
+  <div class="hero-art" onclick="speak('茶', this); burst(this)" title="Tap to hear" lang="zh-CN" aria-label="Hear 茶">茶</div>
+</section>
+
+<section class="section" id="vocab">
+  <div class="section-head"><h2>Everyday vocabulary</h2><span id="count"></span></div>
+  <div class="tabs">
+    <button class="filter active" data-filter="all">All</button>
+    <button class="filter" data-filter="activities">Activities</button>
+    <button class="filter" data-filter="time">Time</button>
+    <button class="filter" data-filter="other">Other</button>
+  </div>
+  <div class="grid" id="vocabGrid"></div>
+</section>
+
+<section class="section" id="numbers">
+  <div class="section-head"><h2>Numbers 0–10</h2><span>数字 · shù zì</span></div>
+  <p class="section-note">The basic building blocks. Tap 🔊 on any card to hear it pronounced.</p>
+  <div class="numbers-wrap">
+    <div class="number-grid" id="numbersGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="yearnums">
+  <div class="section-head"><h2>Numbers + 年 (year)</h2><span>零年 → 十年</span></div>
+  <p class="section-note">Add 年 (nián) after a number to say "<em>N years</em>" or "<em>year N</em>". Notice that 一年 is spoken as <b>yì nián</b> — the tone of 一 changes from yī to yì before a 2nd-tone syllable.</p>
+  <div class="yearnums-wrap">
+    <div class="year-grid" id="yearNumsGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="years">
+  <div class="section-head"><h2>How to say 4-digit years</h2><span>年份 · nián fèn</span></div>
+  <div class="yearbox">
+    <div class="example" onclick="speak('二〇〇〇年', this.querySelector('.sound'))">
+      <button class="sound" onclick="event.stopPropagation();speak('二〇〇〇年', this)">🔊</button>
+      <b lang="zh-CN">2000年</b><span>二〇〇〇年 · èr líng líng líng nián</span>
+    </div>
+    <div class="example" onclick="speak('二〇二六年', this.querySelector('.sound'))">
+      <button class="sound" onclick="event.stopPropagation();speak('二〇二六年', this)">🔊</button>
+      <b lang="zh-CN">2026年</b><span>二〇二六年 · èr líng èr liù nián</span>
+    </div>
+    <div class="example" onclick="speak('一九九八年', this.querySelector('.sound'))">
+      <button class="sound" onclick="event.stopPropagation();speak('一九九八年', this)">🔊</button>
+      <b lang="zh-CN">1998年</b><span>一九九八年 · yī jiǔ jiǔ bā nián</span>
+    </div>
+    <div class="example" onclick="speak('二〇一五年', this.querySelector('.sound'))">
+      <button class="sound" onclick="event.stopPropagation();speak('二〇一五年', this)">🔊</button>
+      <b lang="zh-CN">2015年</b><span>二〇一五年 · èr líng yī wǔ nián</span>
+    </div>
+    <div class="tip" style="grid-column:1/-1">💡 For years, Chinese normally reads the digits one by one, then adds 年 (nián). So 2026 is "2-0-2-6-year", not "two thousand twenty-six."</div>
+  </div>
+</section>
+
+<section class="section" id="write">
+  <div class="section-head">
+    <h2>How to write</h2>
+    <span>写字 · xiě zì</span>
+  </div>
+  <p class="section-note">Tap any card to watch the word get drawn character-by-character, stroke by stroke. Tap again to replay. Multi-character words animate each character in sequence.</p>
+
+  <div class="writer-wrap">
+    <div class="writer-controls" id="writerControls">
+      <button class="writer-btn active" data-wfilter="all">All</button>
+      <button class="writer-btn" data-wfilter="vocab">Vocabulary</button>
+      <button class="writer-btn" data-wfilter="numbers">Numbers</button>
+      <button class="writer-btn" data-wfilter="yearnums">Number + 年</button>
+      <span class="writer-hint">👆 Tap a card to animate</span>
+    </div>
+
+    <div class="stroke-grid" id="strokeGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <div class="section-head"><h2>Quick practice</h2><span>练习 · liàn xí</span></div>
+  <div class="quiz-launch">
+    <h3>Ready to test yourself? 🎯</h3>
+    <p>10 questions on vocabulary, numbers, and years.</p>
+    <button class="launch-btn" onclick="openQuiz()">
+      Start Quick Practice <span class="arrow">→</span>
+    </button>
+  </div>
+</section>
+</main>
+<footer>慢慢来 · <span>Learn slowly, remember more.</span></footer>
+
+<div class="quiz-overlay hidden" id="quizOverlay">
+  <div class="quiz-frame">
+    <div class="quiz-topbar">
+      <div class="quiz-brand"><div class="logo">中</div><span>Quick Practice</span></div>
+      <button class="close-btn" onclick="closeQuiz()">Close ✕</button>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="stats">
+        <span>Question <b id="qNum">1</b>/<b id="qTotal">10</b></span>
+        <span>Score <b id="scoreNum">0</b></span>
+        <span class="streak-fire">🔥 <b id="streakNum">0</b></span>
+      </div>
+
+      <div class="sparkle-stage" id="sparkleStage">
+        <span class="stage-label" id="stageLabel">✓ Correct!</span>
+      </div>
+
+      <div class="prompt-label" id="promptLabel">What does this mean?</div>
+      <div class="quiz-word" id="quizZh" lang="zh-CN">今天</div>
+      <div class="quiz-py" id="quizPy">jīn tiān</div>
+      <div class="quiz-hint" id="quizHint"></div>
+
+      <div class="speak-row">
+        <button class="speak-btn" id="speakBtn" aria-label="Hear the word">🔊</button>
+      </div>
+
+      <div class="answers" id="answers"></div>
+      <div class="result" id="result"></div>
+    </div>
+
+    <div class="actions" id="actions" style="margin-top:22px">
+      <button class="btn btn-primary" id="nextBtn" disabled>Next →</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5.0/dist/hanzi-writer.min.js"></script>
+
+<script>
+const vocab=[
+  ["跑步","pǎo bù","run / running","activities"],
+  ["调皮劲儿","tiáo pí jìnr","playful energy","other"],
+  ["早操","zǎo cāo","morning exercises","activities"],
+  ["游戏","yóu xì","game / play","activities"],
+  ["踢足球","tī zú qiú","play football","activities"],
+  ["跳","tiào","jump","activities"],
+  ["排","pái","row / line","other"],
+  ["皮球","pí qiú","rubber ball","activities"],
+  ["会","huì","can / know how to","other"],
+  ["天天","tiān tiān","every day","time"],
+  ["年","nián","year","time"],
+  ["去年","qù nián","last year","time"],
+  ["今年","jīn nián","this year","time"],
+  ["明年","míng nián","next year","time"],
+  ["月","yuè","month","time"],
+  ["上个月","shàng ge yuè","last month","time"],
+  ["下个月","xià ge yuè","next month","time"],
+  ["日子","rì zi","day / days","time"],
+  ["昨天","zuó tiān","yesterday","time"],
+  ["今天","jīn tiān","today","time"],
+  ["明天","míng tiān","tomorrow","time"]
+];
+const numbers=[
+  ["零","líng","zero"],["一","yī","one"],["二","èr","two"],["三","sān","three"],["四","sì","four"],
+  ["五","wǔ","five"],["六","liù","six"],["七","qī","seven"],["八","bā","eight"],["九","jiǔ","nine"],["十","shí","ten"]
+];
+const yearNumbers=[
+  ["零年","líng nián","zero years"],["一年","yì nián","one year"],["二年","èr nián","two years"],
+  ["三年","sān nián","three years"],["四年","sì nián","four years"],["五年","wǔ nián","five years"],
+  ["六年","liù nián","six years"],["七年","qī nián","seven years"],["八年","bā nián","eight years"],
+  ["九年","jiǔ nián","nine years"],["十年","shí nián","ten years"]
+];
+
+function speak(text, el){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="zh-CN"; u.rate=.78;
+  speechSynthesis.speak(u);
+  document.querySelectorAll(".sound.playing").forEach(b=>b.classList.remove("playing"));
+  if(el && el.classList.contains("sound")){
+    el.classList.add("playing");
+    setTimeout(()=>el.classList.remove("playing"),900);
+  }
+}
+
+function burst(el){
+  const emojis = ["✨","🌟","💫","⭐","🎉","🌼"];
+  const rect = el.getBoundingClientRect();
+  for(let i=0;i<8;i++){
+    const s = document.createElement("div");
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.cssText = `position:fixed;left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;font-size:${14+Math.random()*18}px;pointer-events:none;z-index:9999;animation:sparkle ${.8+Math.random()*.5}s var(--smooth) forwards;transform-origin:center;`;
+    document.body.appendChild(s);
+    const angle = (Math.PI*2*i)/8 + Math.random()*.5;
+    const dist = 60 + Math.random()*60;
+    const dx = Math.cos(angle)*dist;
+    const dy = Math.sin(angle)*dist - 20;
+    s.animate([
+      {transform:"translate(0,0) scale(0) rotate(0)",opacity:0},
+      {transform:`translate(${dx*.5}px,${dy*.5}px) scale(1.3) rotate(180deg)`,opacity:1,offset:.5},
+      {transform:`translate(${dx}px,${dy}px) scale(0) rotate(360deg)`,opacity:0}
+    ],{duration:900+Math.random()*400,easing:"cubic-bezier(.22,1,.36,1)"}).onfinish=()=>s.remove();
+  }
+}
+function wiggleLogo(el){
+  el.style.animation="wiggle .5s ease";
+  burst(el);
+  setTimeout(()=>el.style.animation="",500);
+}
+
+document.addEventListener("click", e=>{
+  const btn = e.target.closest(".nav, .filter, .sound, .answer, .launch-btn, .num, .yearnum, .card, .example, .close-btn, .btn, .writer-btn, .stroke-action");
+  if(!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const r = document.createElement("span");
+  r.className = "ripple";
+  r.style.width = r.style.height = size + "px";
+  r.style.left = (e.clientX - rect.left - size/2) + "px";
+  r.style.top = (e.clientY - rect.top - size/2) + "px";
+  if(getComputedStyle(btn).position === "static") btn.style.position = "relative";
+  btn.appendChild(r);
+  setTimeout(()=>r.remove(),600);
+});
+
+const grid=document.getElementById("vocabGrid");
+const count=document.getElementById("count");
+function renderVocab(filter="all"){
+  const data = filter==="all" ? vocab : vocab.filter(x=>x[3]===filter);
+  count.textContent = data.length + " words";
+  grid.innerHTML = data.map((v,i)=>`
+    <div class="card" style="animation-delay:${i*.03}s">
+      <button class="sound" onclick="event.stopPropagation();speak('${v[0]}', this)" aria-label="Hear ${v[0]}">🔊</button>
+      <div class="zh" lang="zh-CN">${v[0]}</div>
+      <div class="py">${v[1]}</div>
+      <div class="en">${v[2]}</div>
+    </div>`).join("");
+  grid.querySelectorAll(".card").forEach((c,i)=>{
+    c.onclick = (e)=>{ if(!e.target.classList.contains("sound")) speak(data[i][0], c.querySelector(".sound")); };
+  });
+}
+renderVocab();
+document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  renderVocab(b.dataset.filter);
+});
+
+document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  if(b.dataset.go === "quiz"){ openQuiz(); return; }
+  const el=document.getElementById(b.dataset.go);
+  if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+document.getElementById("numbersGrid").innerHTML = numbers.map((n,i)=>`
+  <div class="num" style="animation-delay:${i*.04}s" onclick="speak('${n[0]}', this.querySelector('.sound')); burst(this)">
+    <div class="zh" lang="zh-CN">${n[0]}</div>
+    <div class="py">${n[1]}</div>
+    <div class="en">${n[2]}</div>
+    <button class="sound" onclick="event.stopPropagation();speak('${n[0]}', this); burst(this)" aria-label="Hear ${n[0]}">🔊</button>
+  </div>`).join("");
+
+document.getElementById("yearNumsGrid").innerHTML = yearNumbers.map((n,i)=>`
+  <div class="yearnum" style="animation-delay:${i*.04}s" onclick="speak('${n[0]}', this.querySelector('.sound')); burst(this)">
+    <div class="zh" lang="zh-CN">${n[0]}</div>
+    <div class="py">${n[1]}</div>
+    <div class="en">${n[2]}</div>
+    <button class="sound" onclick="event.stopPropagation();speak('${n[0]}', this); burst(this)" aria-label="Hear ${n[0]}">🔊</button>
+  </div>`).join("");
+
+/* HOW TO WRITE */
+const WRITER_ENTRIES = [];
+const seen = new Set();
+function pushEntry(text, py, en, pool){
+  const key = pool + "|" + text;
+  if(seen.has(key)) return;
+  seen.add(key);
+  WRITER_ENTRIES.push({text, py, en, pool});
+}
+vocab.forEach(v => pushEntry(v[0], v[1], v[2], "vocab"));
+numbers.forEach(n => pushEntry(n[0], n[1], n[2], "numbers"));
+yearNumbers.forEach(n => pushEntry(n[0], n[1], n[2], "yearnums"));
+
+const CARD_WRITERS = [];
+
+function buildStrokeGrid(){
+  const grid = document.getElementById("strokeGrid");
+  grid.innerHTML = WRITER_ENTRIES.map((entry, i) => {
+    const chars = [...entry.text];
+    const cells = chars.map((c, ci) => `
+      <div class="writer-cell">
+        <div class="writer-target" id="wt-${i}-${ci}"></div>
+      </div>`).join("");
+    return `
+      <div class="stroke-card" data-idx="${i}" data-pool="${entry.pool}" data-text="${entry.text}" style="animation-delay:${Math.min(i,20)*.02}s">
+        <div class="writer-canvas-holder">
+          ${cells}
+        </div>
+        <div class="stroke-label">
+          <div class="zh" lang="zh-CN">${entry.text}</div>
+          <div class="py">${entry.py}</div>
+          <div class="en">${entry.en}</div>
+        </div>
+        <div class="stroke-actions">
+          <button class="stroke-action" data-replay="${i}" title="Replay animation" aria-label="Replay stroke animation for ${entry.text}">▶</button>
+          <button class="stroke-action" data-speak="${entry.text}" title="Hear pronunciation" aria-label="Hear ${entry.text}">🔊</button>
+        </div>
+      </div>`;
+  }).join("");
+
+  WRITER_ENTRIES.forEach((entry, i) => {
+    const chars = [...entry.text];
+    const writers = [];
+    chars.forEach((c, ci) => {
+      const target = document.getElementById(`wt-${i}-${ci}`);
+      const writer = HanziWriter.create(target, c, {
+        width: 96,
+        height: 96,
+        padding: 6,
+        showOutline: true,
+        showCharacter: false,
+        strokeColor: "#b86f5f",
+        outlineColor: "#e6d2bb",
+        radicalColor: "#8b6fa8",
+        strokeAnimationSpeed: 1.2,
+        delayBetweenStrokes: 180,
+        strokeHighlightSpeed: 1.6,
+        drawingWidth: 18
+      });
+      writers.push(writer);
+    });
+    CARD_WRITERS.push({ card: grid.querySelector(`[data-idx="${i}"]`), writers, chars });
+  });
+
+  CARD_WRITERS.forEach((item, i) => {
+    item.card.addEventListener("click", (e) => {
+      if(e.target.closest(".stroke-action")) return;
+      playSequence(i, item.card);
+    });
+  });
+
+  grid.querySelectorAll("[data-replay]").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.replay, 10);
+      const item = CARD_WRITERS[idx];
+      burst(btn);
+      playSequence(idx, item.card);
+    });
+  });
+
+  grid.querySelectorAll("[data-speak]").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      speak(btn.dataset.speak, null);
+      burst(btn);
+    });
+  });
+}
+
+function playSequence(idx, cardEl){
+  const item = CARD_WRITERS[idx];
+  if(!item) return;
+
+  document.querySelectorAll(".stroke-card.active").forEach(c => c.classList.remove("active"));
+  cardEl.classList.add("active");
+  setTimeout(()=>cardEl.classList.remove("active"), 1200);
+
+  const { writers } = item;
+  writers.forEach(w => { try { w.cancelQuiz && w.cancelQuiz(); } catch(e){} });
+  writers.forEach(w => { try { w.hideCharacter({ duration: 0 }); } catch(e) {} });
+
+  let i = 0;
+  function next(){
+    if(i >= writers.length) return;
+    const w = writers[i];
+    w.animateCharacter({
+      onComplete: () => {
+        i++;
+        setTimeout(next, 220);
+      }
+    });
+  }
+  next();
+}
+
+document.querySelectorAll(".writer-btn[data-wfilter]").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".writer-btn[data-wfilter]").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    const f = b.dataset.wfilter;
+    document.querySelectorAll("#strokeGrid .stroke-card").forEach(card => {
+      const pool = card.dataset.pool;
+      card.style.display = (f === "all" || pool === f) ? "" : "none";
+    });
+  });
+});
+
+/* QUIZ */
+const TOTAL=10;
+
+const ALL = [].concat(
+  vocab.map(v=>({zh:v[0],py:v[1],en:v[2],pool:v[3],label:"What does this mean?",hint:""})),
+  numbers.map(n=>({zh:n[0],py:n[1],en:n[2],pool:n[3],label:"Which number is this?",hint:"0–10"})),
+  yearNumbers.map(n=>({zh:n[0],py:n[1],en:n[2],pool:n[3],label:"Which phrase is this?",hint:"Number + 年"}))
+);
+
+let questions=[], current=0, score=0, streak=0, bestStreak=0, answered=false;
+
+const el = {
+  overlay: document.getElementById("quizOverlay"),
+  card:    document.getElementById("quizCard"),
+  actions: document.getElementById("actions"),
+  qNum:    document.getElementById("qNum"),
+  qTotal:  document.getElementById("qTotal"),
+  score:   document.getElementById("scoreNum"),
+  streak:  document.getElementById("streakNum"),
+  progress:document.getElementById("progressFill"),
+  stage:   document.getElementById("sparkleStage"),
+  stageLabel: document.getElementById("stageLabel"),
+  zh:      document.getElementById("quizZh"),
+  py:      document.getElementById("quizPy"),
+  hint:    document.getElementById("quizHint"),
+  label:   document.getElementById("promptLabel"),
+  answers: document.getElementById("answers"),
+  result:  document.getElementById("result"),
+  next:    document.getElementById("nextBtn"),
+  speakBtn:document.getElementById("speakBtn")
+};
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function openQuiz(){
+  el.overlay.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  startQuiz();
+}
+function closeQuiz(){
+  el.overlay.classList.add("hidden");
+  document.body.style.overflow = "";
+  speechSynthesis && speechSynthesis.cancel();
+}
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape" && !el.overlay.classList.contains("hidden")) closeQuiz();
+});
+
+function startQuiz(){
+  questions = shuffle(ALL).slice(0, TOTAL);
+  current = 0; score = 0; streak = 0; bestStreak = 0; answered = false;
+  el.actions.style.display = "";
+  el.actions.innerHTML = '<button class="btn btn-primary" id="nextBtn" disabled>Next →</button>';
+  el.next = document.getElementById("nextBtn");
+  el.next.onclick = nextQuestion;
+  renderQuiz();
+  updateStats();
+}
+
+function updateStats(){
+  el.qNum.textContent = Math.min(current+1, TOTAL);
+  el.qTotal.textContent = TOTAL;
+  el.score.textContent = score;
+  el.streak.textContent = streak;
+  el.progress.style.width = ((current)/TOTAL*100) + "%";
+}
+
+function clearStage(){
+  el.stage.querySelectorAll(".stage-sparkle").forEach(s=>s.remove());
+  el.stage.classList.remove("show-label");
+}
+
+function playStageSparkles(label){
+  clearStage();
+  el.stageLabel.textContent = label;
+  el.stage.classList.add("show-label");
+  const emojis = ["✨","🌟","💫","⭐","🎉","🌈","💖"];
+  for(let i=0;i<6;i++){
+    const s = document.createElement("span");
+    s.className = "stage-sparkle";
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left = (8 + Math.random()*84) + "%";
+    s.style.animationDelay = (i*0.06) + "s";
+    s.style.fontSize = (20 + Math.random()*16) + "px";
+    el.stage.appendChild(s);
+  }
+  setTimeout(()=>{
+    el.stage.classList.remove("show-label");
+  }, 1200);
+}
+
+function renderQuiz(){
+  answered = false;
+  clearStage();
+  el.result.textContent = "";
+  el.result.className = "result";
+  el.next.disabled = true;
+
+  const q = questions[current];
+  el.zh.textContent = q.zh;
+  el.zh.setAttribute("lang","zh-CN");
+  el.py.textContent = q.py;
+  el.label.textContent = q.label;
+  el.hint.textContent = q.hint ? ("Category: " + q.hint) : "";
+
+  el.zh.style.animation = "none";
+  void el.zh.offsetWidth;
+  el.zh.style.animation = "";
+
+  const pool = ALL.filter(x => x.pool === q.pool && x.en !== q.en);
+  const distractors = shuffle(pool).slice(0, 3);
+  const opts = shuffle([q].concat(distractors));
+
+  let html = "";
+  for(let i=0;i<opts.length;i++){
+    html += '<button class="answer" data-val="' + opts[i].en.replace(/"/g,'&quot;') + '" style="animation-delay:'+(i*.06)+'s">' +
+            '<span>' + opts[i].en + '</span>' +
+            '<span class="mark"></span>' +
+            '</button>';
+  }
+  el.answers.innerHTML = html;
+
+  el.answers.querySelectorAll(".answer").forEach(b=>{
+    b.onclick = (e) => chooseAnswer(b, b.dataset.val, q.en, e);
+  });
+}
+
+function chooseAnswer(btn, got, correct, e){
+  if(answered) return;
+  answered = true;
+
+  const buttons = el.answers.querySelectorAll(".answer");
+
+  if(got === correct){
+    score++; streak++;
+    if(streak > bestStreak) bestStreak = streak;
+
+    btn.classList.add("correct");
+    buttons.forEach(b=>{ if(b !== btn) b.classList.add("dim"); });
+
+    const praise = ["✓ Correct!","✓ Nice one!","✓ 好极了!","✓ You got it!","✓ Well done!"][Math.floor(Math.random()*5)];
+    el.result.textContent = "";
+    el.result.className = "result good";
+    playStageSparkles(praise);
+    speak(questions[current].zh, null);
+  } else {
+    streak = 0;
+    btn.classList.add("wrong");
+    buttons.forEach(b=>{
+      b.disabled = true;
+      if(b.dataset.val === correct){ b.classList.add("correct"); }
+      else if(b !== btn){ b.classList.add("dim"); }
+    });
+    el.result.textContent = 'Not quite — the answer is "' + correct + '".';
+    el.result.className = "result bad";
+  }
+
+  buttons.forEach(b=>b.disabled = true);
+  el.next.disabled = false;
+  updateStats();
+}
+
+function nextQuestion(){
+  if(current < TOTAL-1){
+    current++;
+    renderQuiz();
+    updateStats();
+  } else {
+    finishQuiz();
+  }
+}
+
+function finishQuiz(){
+  el.progress.style.width = "100%";
+  const pct = Math.round(score/TOTAL*100);
+  let msg, icon;
+  if(pct === 100){ msg = "Perfect score! 太厉害了!"; icon = "🎉"; confettiRain(); }
+  else if(pct >= 80){ msg = "Great work! 很好!"; icon = "🌟"; confettiRain(); }
+  else if(pct >= 50){ msg = "Good effort — keep practising!"; icon = "👍"; }
+  else { msg = "Nice start — try again to improve!"; icon = "💪"; }
+
+  el.card.innerHTML =
+    '<div class="done">' +
+      '<div class="big">' + icon + '</div>' +
+      '<h3>Quiz complete!</h3>' +
+      '<div class="score-line">' + score + ' / ' + TOTAL + '</div>' +
+      '<p>' + msg + ' Best streak: ' + bestStreak + '.</p>' +
+      '<div class="actions">' +
+        '<button class="btn btn-primary" id="againBtn">Play Again 🔁</button>' +
+        '<button class="btn btn-ghost" id="doneCloseBtn">Close</button>' +
+      '</div>' +
+    '</div>';
+
+  document.getElementById("againBtn").onclick = startQuiz;
+  document.getElementById("doneCloseBtn").onclick = closeQuiz;
+}
+
+function confettiRain(){
+  const colors = ["#b86f5f","#d9a17f","#7f9b83","#8b6fa8","#e8b96a","#e8b99e"];
+  for(let i=0;i<60;i++){
+    const c = document.createElement("div");
+    c.style.cssText = "position:fixed;top:-20px;width:"+(6+Math.random()*8)+"px;height:"+(6+Math.random()*8)+"px;background:"+colors[i%colors.length]+";left:"+(Math.random()*100)+"vw;pointer-events:none;z-index:9999;border-radius:"+(Math.random()<.5?"50%":"2px")+";animation:confettiFall "+(2+Math.random()*2)+"s linear forwards;animation-delay:"+(Math.random()*.5)+"s;transform:rotate("+(Math.random()*360)+"deg)";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4500);
+  }
+}
+
+el.speakBtn.onclick = ()=>{
+  const q = questions[current];
+  if(q) speak(q.zh, el.speakBtn);
+};
+
+buildStrokeGrid();
+</script>
+</body>
+</html>
